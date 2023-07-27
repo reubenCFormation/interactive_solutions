@@ -37,7 +37,7 @@ class Animal{
 
     
 }
-
+/*
 $domesticAnimal=new Animal("Goldie","Mammal",60,4);
 
 $domesticAnimal->getIsDomestic();
@@ -46,6 +46,7 @@ echo '<br/>';
 $wildAnimal=new Animal("Hulk","Monster",300,2);
 
 $wildAnimal->getIsDomestic();
+*/
 
 
 /*
