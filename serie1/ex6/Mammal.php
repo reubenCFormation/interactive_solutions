@@ -2,7 +2,7 @@
 require_once("./Animal.php");
 class Mammal extends Animal{
    protected  string $type;
-    protected bool $isDomestic;
+   
  
     
     public function __construct($species,$name,$legs,$weight){
