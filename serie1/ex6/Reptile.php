@@ -52,6 +52,13 @@ $turtle=new Reptile("turtle","Turtie",4,150);
 
 // etant donnée que 
 echo $turtle->describeAnimal();
+/*
+$turtle->insert();
+*/
+
+$croc=new Reptile("crocodile","nicecroc",4,80);
+
+$croc->insert();
 
 
 

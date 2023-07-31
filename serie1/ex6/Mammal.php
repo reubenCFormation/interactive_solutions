@@ -75,7 +75,7 @@ class Mammal extends Animal{
 $dog=new Mammal("Dog","Golden",4,80);
 echo $dog->describeAnimal();
 
-
+$dog->insert();
 
 echo '<br/>';
 
@@ -86,8 +86,11 @@ echo '<br/>';
 // on peux dire que notre monstre hulk a pu perdre 100 kilos et que maintenant il devindra domestique!
 
 $hulk->setWeight(100);
-// etant donné que j'ai access aux methodes du parent, je peux en utiliser une ici!
+// etant né que j'ai access aux methodes du parent, je peux en utiliser une ici!
 $hulk->setIsDomestic(true);
+echo '<pre>';
+var_dump($hulk->getIsDomestic());
+echo '</pre>';
 
 // constatons que notre loup est devenu domestiqué!
 
@@ -96,6 +99,17 @@ $hulk->setIsDomestic(true);
 
 $bigDog=new Mammal("dog","BigDawg",4,150);
 echo $bigDog->describeAnimal();
+
+
+$horse=new Mammal("horse","seabiscuit",4,250);
+
+echo '<pre>';
+var_dump($horse->getIsDomestic());
+echo '</pre>';
+
+
+
+
 
 
 

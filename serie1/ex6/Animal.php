@@ -1,11 +1,12 @@
 <?php
+require_once('./Connect.php');
 // Maintenant que nous avons un peu vu l'heritage, nous pouvons potentiellement decouper notre classe Animal en plusiers partie differente. Dans un premier temps, nous pouvons constater que un Animal aura un nom et un numero de jambes,ainsi que un poids. Cependant, les animaux sont souvent classifier par leur type (phylum) (mammifiere, reptile etc.) Ainsi que par leur especes (Dog,Human etc.) Bien que trés simplifié, nous allons pouvoir voir comment decouper notre logique avec l'heritage!
 
 class Animal{
     protected int $id;
     protected int $legs;
     protected int $weight;
-   
+    protected bool $isDomestic;
     protected string $species;
    
     protected string $name;
@@ -26,6 +27,19 @@ class Animal{
        
     }
     // Ici je protege mon setter pour faire en sorte que nous pouvons pas mettre n'importe quoi. Nous devons soit choisir "Reptile" soit "Mammal". On aurai pu continuer a proteger ce code en mettant cette methode dans les classes enfants mais pour le moment ca suffira. Je mets également ma fonction en protected pour m'assurer que elle ne pourra pas étre appeler directement sur une Instance (meme si ce n'est pas strictement neccesaire de faire cela).
+
+   public function insert(){
+     try{
+        $dbConnector=Connect::connectToDB();
+        $sql="INSERT into animals(name,type,species,legs,weight,isDomestic) VALUES (?,?,?,?,?,?)";
+        $statement=$dbConnector->prepare($sql);
+        $statement->execute([$this->name,$this->type,$this->species,$this->legs,$this->weight,intval($this->isDomestic)]);
+     }
+
+     catch(PDOException $e){
+        echo $e->getMessage();
+     }
+   }
  
 
  
