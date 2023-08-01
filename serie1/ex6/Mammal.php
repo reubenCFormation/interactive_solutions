@@ -1,18 +1,21 @@
 <?php
 require_once("./Animal.php");
+
 class Mammal extends Animal{
    protected  string $type;
    
  
     
-    public function __construct($species,$name,$legs,$weight){
+    public function __construct($species,$name,$legs,$weight,$id){
         // ici l'enfant va definir $species et $type et via l'heritage il y aura access et pourra modifier/definir les valeurs sans devoir les redeclarer etant donnée que il y hérite
-        
+        if($id){
+            $this->id=$id;
+        }
         $this->setType("Mammal");
         // logiquement un espece va decouler d'un $type (Mammal ou Reptile, il serai donc aussi pertinent de definir $species ici)
         $this->species=$species;
 
-       
+        
         
         
         // je fais appel au constructeur du parent en passant les parametres
@@ -30,6 +33,34 @@ class Mammal extends Animal{
 
        
     }
+ /*
+    public static function findAll($class){
+        $mammals=parent::findAll($class);
+        $mammalsObjArr=[];
+        foreach($mammals as $mammal){
+            $mammalsObjArr[]=new Mammal($mammal["species"],$mammal["name"],$mammal["legs"],$mammal["weight"],$mammal["id"]);
+        }
+
+        return $mammalsObjArr;
+    }
+    */
+
+    public static function findAllMammals(){
+        $dbConnector=Connect::connectToDB();
+        $sql="SELECT * FROM animals WHERE type=?";
+        $statement=$dbConnector->prepare($sql);
+        $statement->execute([self::class]);
+        $mammals=$statement->fetchAll(PDO::FETCH_ASSOC);
+        $mammalsObjArr=[];
+
+        foreach($mammals as $mammal){
+            $mammalsObjArr[]=new Mammal($mammal["species"],$mammal["name"],$mammal["legs"],$mammal["weight"],$mammal["id"]);
+        }
+
+        return $mammalsObjArr;
+
+
+    }
     // ici etant donnée que nous allons definir notre proprieté $type dans l'enfant, je vais logiquement mettre mon setter pour la proprieté $type dans l'enfant. Etant donnée que 
 
     public function setType($type){
@@ -42,19 +73,14 @@ class Mammal extends Animal{
         }
     }
 
+
+ 
+
     public  function getType(){
         return $this->type;
     }
 
 
-
-  
-
-   
-
-  
-
-    
 
     
    // ici je dois surcharger $type. Sinon, $type ne sera que defini dans le parent et l'enfant prendra la derniere valeur defini dans le parent étant donnée que la proprieté est statique, il n'y a que une valeur a un moment donnée. Si je ne redefini pas $type dans l'enfant, par defaut il prendra la derniere valeur de $type dans le parent meme si la derniere valeur aurai éetait Reptile par exemple.
@@ -72,40 +98,10 @@ class Mammal extends Animal{
 }
 
 
-$dog=new Mammal("Dog","Golden",4,80);
-echo $dog->describeAnimal();
-
-$dog->insert();
-
-echo '<br/>';
-
-$hulk=new Mammal("Hulk","Monster",2,200);
-echo $hulk->describeAnimal();
-
-echo '<br/>';
-// on peux dire que notre monstre hulk a pu perdre 100 kilos et que maintenant il devindra domestique!
-
-$hulk->setWeight(100);
-// etant né que j'ai access aux methodes du parent, je peux en utiliser une ici!
-$hulk->setIsDomestic(true);
-echo '<pre>';
-var_dump($hulk->getIsDomestic());
-echo '</pre>';
-
-// constatons que notre loup est devenu domestiqué!
 
 
 
 
-$bigDog=new Mammal("dog","BigDawg",4,150);
-echo $bigDog->describeAnimal();
-
-
-$horse=new Mammal("horse","seabiscuit",4,250);
-
-echo '<pre>';
-var_dump($horse->getIsDomestic());
-echo '</pre>';
 
 
 
