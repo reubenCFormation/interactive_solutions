@@ -1,19 +1,23 @@
 <?php
   require_once('./Mammal.php');
   require_once('./Reptile.php');
+ 
   class AnimalController{
-    public static function mergeArr(){
-        $mammalsObjArr=Mammal::findAllMammals();
-        $reptilesObjArr=Reptile::findAllReptiles();
+    public function getAllAnimals(){
+        $getAllMammals=Mammal::findAllMammals();
+        $getAllReptiles=Reptile::findAllReptiles();
+        $getAllAnimals=array_merge($getAllMammals,$getAllReptiles);
 
-        return array_merge($mammalsObjArr,$reptilesObjArr);
+        return $getAllAnimals;
     }
   }
-  $getAllAnimals=AnimalController::mergeArr();
+
+  $newController=new AnimalController();
+
+  $getAllAnimals=$newController->getAllAnimals();
 
   echo '<pre>';
   var_dump($getAllAnimals);
   echo '</pre>';
-
 
 ?>

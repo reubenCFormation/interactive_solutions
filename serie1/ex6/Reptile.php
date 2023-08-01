@@ -40,18 +40,25 @@ class Reptile extends Animal{
     */
 
     public static function findAllReptiles(){
-        $dbConnector=Connect::connectToDB();
-        $sql="SELECT * FROM animals WHERE type=?";
-        $statement=$dbConnector->prepare($sql);
-        $statement->execute([self::class]);
-        $reptiles=$statement->fetchAll(PDO::FETCH_ASSOC);
-        $reptilesObjArr=[];
+        try{
+            $dbConnector=Connect::connectToDB();
+            $sql="SELECT * FROM animals WHERE type=?";
+            $statement=$dbConnector->prepare($sql);
+            $statement->execute(["Reptile"]);
+            $reptiles=$statement->fetchAll(PDO::FETCH_ASSOC);
+            $reptilesObjArr=[];
 
-        foreach($reptiles as $reptile){
-            $reptilesObjArr[]=new Reptile($reptile["species"],$reptile["name"],$reptile["legs"],$reptile["weight"],$reptile["id"]);
+            foreach($reptiles as $reptile){
+                $reptilesObjArr[]=new Reptile($reptile["species"],$reptile["name"],$reptile["legs"],$reptile["weight"],$reptile["id"]);
+            }
+
+            return $reptilesObjArr;
         }
 
-        return $reptilesObjArr;
+        catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        
     }
 
     public  function getType(){
@@ -77,6 +84,10 @@ class Reptile extends Animal{
    
  
 }
+
+$newReptile=new Reptile("Lizard","Lizzy",4,40);
+
+$getReptileDomesticCount=Reptile::getDomesticByType("Reptile");
 
 
 

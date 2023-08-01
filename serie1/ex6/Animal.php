@@ -110,6 +110,22 @@ class Animal{
         return $this->id;
     }
 
+    public static function getDomesticByType($type){
+        try{
+            $dbConnector=Connect::connectToDB();
+            $sql="SELECT * FROM animals WHERE type=? AND isDomestic=?";
+            $statement=$dbConnector->prepare($sql);
+            $statement->execute([$type,1]);
+            $result=$statement->fetchAll(PDO::FETCH_ASSOC);
+            return count($result);
+        }
+
+        catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+
    
 
    // Les classes enfants (Mammal et Reptile) auront access a cette methode et ils pourront l'appeler. Ici $type et $species n'ont pas de valeur defini dans la classe parente mais étant donnée que c'est l'enfant qui va faire appel a la methode et que l'enfant va redefinir les valeurs, les valeurs seront definis

@@ -6,7 +6,7 @@ class Mammal extends Animal{
    
  
     
-    public function __construct($species,$name,$legs,$weight,$id){
+    public function __construct($species,$name,$legs,$weight,$id=null){
         // ici l'enfant va definir $species et $type et via l'heritage il y aura access et pourra modifier/definir les valeurs sans devoir les redeclarer etant donnée que il y hérite
         if($id){
             $this->id=$id;
@@ -46,18 +46,25 @@ class Mammal extends Animal{
     */
 
     public static function findAllMammals(){
-        $dbConnector=Connect::connectToDB();
-        $sql="SELECT * FROM animals WHERE type=?";
-        $statement=$dbConnector->prepare($sql);
-        $statement->execute([self::class]);
-        $mammals=$statement->fetchAll(PDO::FETCH_ASSOC);
-        $mammalsObjArr=[];
+        try{
+            $dbConnector=Connect::connectToDB();
+            $sql="SELECT * FROM animals WHERE type=?";
+            $statement=$dbConnector->prepare($sql);
+            $statement->execute(["Mammal"]);
+            $mammals=$statement->fetchAll(PDO::FETCH_ASSOC);
+            $mammalsObjArr=[];
 
         foreach($mammals as $mammal){
             $mammalsObjArr[]=new Mammal($mammal["species"],$mammal["name"],$mammal["legs"],$mammal["weight"],$mammal["id"]);
         }
 
-        return $mammalsObjArr;
+         return $mammalsObjArr;
+        }
+
+        catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        
 
 
     }
@@ -96,6 +103,15 @@ class Mammal extends Animal{
     
  
 }
+
+$newMammal=new Mammal("Dog","fluffy",4,50);
+
+$getMammalDomesticCount=Mammal::getDomesticByType("Mammal");
+
+echo '<pre>';
+var_dump($getMammalDomesticCount);
+echo '</pre>';
+
 
 
 
