@@ -1,6 +1,10 @@
 <?php
  require_once('../vendor/autoload.php');
- require_once('../controller/AnimalController.php');
+ 
+
+ 
+ require_once('../app/controller/AnimalController.php');
+
 
  $router=new AltoRouter();
 
