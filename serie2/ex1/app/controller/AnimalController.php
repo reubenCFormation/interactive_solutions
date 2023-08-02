@@ -12,8 +12,8 @@ class AnimalController{
         // mon mot de passe (j'en precise pas). Plus tard, nous allons voir comment securiser notre mot de passe avec les variables d'environment
         $password="";
         
-        $dbConnector=new \PDO("mysql:host=$host;dbname=$dbname",$username,$password);
-        $dbConnector->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $dbConnector=new PDO("mysql:host=$host;dbname=$dbname",$username,$password);
+        $dbConnector->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $dbConnector;
     }
 
@@ -22,7 +22,7 @@ class AnimalController{
             $sql="SELECT * FROM animals";
             $dbConnector=self::connect();
             $statement=$dbConnector->query($sql);
-            $animals=$statement->fetchAll(\PDO::FETCH_ASSOC);
+            $animals=$statement->fetchAll(PDO::FETCH_ASSOC);
             
             echo '<pre>';
             var_dump($animals);
@@ -34,7 +34,7 @@ class AnimalController{
             */
         }
 
-        catch(\PDOException $e){
+        catch(PDOException $e){
             echo $e->getMessage();
         }
     }
@@ -45,14 +45,14 @@ class AnimalController{
             $sql="SELECT * FROM animals WHERE id=?";
             $statement=$dbConnector->prepare($sql);
             $statement->execute([$id]);
-            $findAnimal=$statement->fetch(\PDO::FETCH_ASSOC);
+            $findAnimal=$statement->fetch(PDO::FETCH_ASSOC);
 
             echo '<pre>';
             var_dump($findAnimal);
             echo '</pre>';
         }
 
-        catch(\PDOException $e){
+        catch(PDOException $e){
             echo $e->getMessage();
         }
     }
