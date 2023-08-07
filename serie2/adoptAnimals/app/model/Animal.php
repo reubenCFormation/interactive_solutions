@@ -1,8 +1,8 @@
 <?php
-namespace model;
-
-
 // Maintenant que nous avons un peu vu l'heritage, nous pouvons potentiellement decouper notre classe Animal en plusiers partie differente. Dans un premier temps, nous pouvons constater que un Animal aura un nom et un numero de jambes,ainsi que un poids. Cependant, les animaux sont souvent classifier par leur type (phylum) (mammifiere, reptile etc.) Ainsi que par leur especes (Dog,Human etc.) Bien que trés simplifié, nous allons pouvoir voir comment decouper notre logique avec l'heritage!
+namespace model;
+use model\User;
+use PDOException;
 
 class Animal{
     protected int $id;
@@ -10,16 +10,15 @@ class Animal{
     protected int $weight;
     protected bool $isDomestic;
     protected string $name;
+    protected int $userId;
+    protected User $user;
     // dans mon constructeur, je ne vais pas definir l'espece ou le type, ca sera dans ma classe! Je vais tout de meme devoir definir mes proprietés pour que elle soit reconnu dans la classe enfant!
-    public function __construct($name,$legs,$weight){
+    public function __construct($name,$legs,$weight,$userId){
         // ici je ne defini que $name,$weight et $legs,et $isDomestic. Le reste ca sera a la classe enfant!
         $this->name=$name;
         $this->setWeight($weight);
         $this->setLegs($legs);
-
-      
-       
-
+        $this->userId=$userId;
 
        
     }
@@ -68,6 +67,46 @@ class Animal{
         return $this->id;
     }
 
+  
+
+    public function getUser(){
+        return $this->user;
+    }
+
+    public function insert(){
+        try{
+            $dbConnector=Connect::connectTODB();
+            $sql="INSERT INTO animals (name,legs,weight,type,species,user_id,isDomestic) VALUES (?,?,?,?,?,?,?)";
+            $statement=$dbConnector->prepare($sql);
+            $statement->execute([$this->name,$this->legs,$this->weight,$this->type,$this->species,$this->userId,intval($this->isDomestic)]);
+            return true;
+        }
+
+        catch(\PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function setUser(User $user){
+        $this->user=$user;
+    }
+
+    public function findAll(){
+        try{
+            $dbConnector=Connect::connectToDB();
+            $sql="SELECT * FROM animals";
+            $statement=$dbConnector->query($sql);
+            $animals=$statement->fetchAll(\PDO::FETCH_ASSOC);
+            return $animals;
+        }
+
+        catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+   
+
    
 
    // Les classes enfants (Mammal et Reptile) auront access a cette methode et ils pourront l'appeler. Ici $type et $species n'ont pas de valeur defini dans la classe parente mais étant donnée que c'est l'enfant qui va faire appel a la methode et que l'enfant va redefinir les valeurs, les valeurs seront definis
@@ -93,4 +132,3 @@ class Animal{
 
 
 ?>
-

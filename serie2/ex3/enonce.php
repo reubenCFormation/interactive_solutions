@@ -39,7 +39,7 @@ PARTIE II) Consignes
 
 
 
-5) Apres avoir pu acceder aux formulaire pour inserer un nouveau animal, faites en sorte de generer une route (en POST) qui va pouvoir reelement inserer un animal en base de données et ensuite lors que votre animal a bien etait insere en bdd, faites une redirection vers la page d'accueil. Hint: Vous auriez besoin de rajouter du code dans vos models ainsi que votre Controller! Bonus: Apres que l'insertion ait reussi, afficher un message de feliciations
+5) Apres avoir pu acceder aux formulaire pour inserer un nouveau animal, faites en sorte de generer une route (en POST) qui va pouvoir reelement inserer un animal (qui sera soit un Mammal, soit un Reptile) en base de données et ensuite lors que votre animal a bien etait insere en bdd, faites une redirection vers la page d'accueil. Hint: Vous auriez besoin de rajouter du code dans vos models ainsi que votre Controller! Bonus: Apres que l'insertion ait reussi, afficher un message de feliciations
 
 Bonus!
 
